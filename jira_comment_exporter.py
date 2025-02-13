@@ -38,6 +38,9 @@ def parse_text(element):
             output = f"~~{output}~~"
         elif mark["type"] == "underline":
             output = f"<ins>{output}</ins>"
+        elif mark["type"] == "subsup":
+            if mark["attrs"]["type"] == "sub":
+                output = f"~{output}~"
 
     return output
 
