@@ -36,6 +36,8 @@ def parse_text(element):
             output = f"`{output}`"
         elif mark["type"] == "strike":
             output = f"~~{output}~~"
+        elif mark["type"] == "underline":
+            output = f"<ins>{output}</ins>"
 
     return output
 
