@@ -34,6 +34,8 @@ def parse_text(element):
     for mark in element.get("marks", []):
         if mark["type"] == "em":
             output = f"*{output}*"
+        elif mark["type"] == "strong":
+            output = f"**{output}**"
         elif mark["type"] == "code":
             output = f"`{output}`"
         elif mark["type"] == "strike":
