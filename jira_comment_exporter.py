@@ -41,6 +41,8 @@ def parse_text(element):
         elif mark["type"] == "subsup":
             if mark["attrs"]["type"] == "sub":
                 output = f"~{output}~"
+            elif mark["attrs"]["type"] == "sup":
+                output = f"^{output}^"
 
     return output
 
