@@ -47,6 +47,16 @@ def parse_text(element):
     return output
 
 
+def parse_heading(element):
+    level = element["attrs"]["level"]
+    header = ""
+    for item in element["content"]:
+        if item["type"] == "text":
+            header += parse_text(item)
+
+    return f"{'#'*level} {header}"
+
+
 def parse_paragraph(content):
     paragraph = ""
     for element in content:
@@ -69,12 +79,14 @@ def main():
         print("\n", "comment:", comment_idx, "----------------")
         content = comment["body"]["content"]
         for part_idx, part in enumerate(content):
-            print(part)
             if part["type"] == "paragraph":
                 paragraph = parse_paragraph(part["content"])
                 if part_idx != 0:
                     paragraph = "\n" + paragraph
                 print(paragraph)
+            elif part["type"] == "heading":
+                header = parse_heading(part)
+                print(header)
 
 
 if __name__ == "__main__":
