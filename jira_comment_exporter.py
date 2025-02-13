@@ -32,7 +32,9 @@ def get_ticket_comments(ticket_key):
 def parse_text(element):
     output = element["text"]
     for mark in element.get("marks", []):
-        if mark["type"] == "code":
+        if mark["type"] == "em":
+            output = f"*{output}*"
+        elif mark["type"] == "code":
             output = f"`{output}`"
         elif mark["type"] == "strike":
             output = f"~~{output}~~"
@@ -79,6 +81,7 @@ def main():
         print("\n", "comment:", comment_idx, "----------------")
         content = comment["body"]["content"]
         for part_idx, part in enumerate(content):
+            print(part)
             if part["type"] == "paragraph":
                 paragraph = parse_paragraph(part["content"])
                 if part_idx != 0:
