@@ -50,9 +50,11 @@ def main():
                                 text = f"`{text}`"
 
                         paragraph += text
-
                     elif element["type"] == "hardBreak":
                         paragraph += "\n"
+                    elif element["type"] == "inlineCard":
+                        url = element["attrs"]["url"]
+                        paragraph += f"[{url}]({url})"
 
                 print(paragraph)
 
