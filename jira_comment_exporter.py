@@ -29,6 +29,29 @@ def get_ticket_comments(ticket_key):
     return json.loads(response.text)
 
 
+def parse_text(element):
+    output = element["text"]
+    for mark in element.get("marks", []):
+        if mark["type"] == "code":
+            output = f"`{output}`"
+
+    return output
+
+
+def parse_paragraph(content):
+    paragraph = ""
+    for element in content:
+        if element["type"] == "text":
+            paragraph += parse_text(element)
+        elif element["type"] == "hardBreak":
+            paragraph += "\n"
+        elif element["type"] == "inlineCard":
+            url = element["attrs"]["url"]
+            paragraph += f"[{url}]({url})"
+
+    return paragraph
+
+
 def main():
     response = get_ticket_comments("CLD-223")
     comments = response["comments"]
@@ -37,25 +60,11 @@ def main():
         print("\n", "comment:", comment_idx, "----------------")
         content = comment["body"]["content"]
         for part_idx, part in enumerate(content):
+            print(part)
             if part["type"] == "paragraph":
-                paragraph = ""
+                paragraph = parse_paragraph(part["content"])
                 if part_idx != 0:
-                    paragraph += "\n"
-                for element in part["content"]:
-                    if element["type"] == "text":
-                        text = element["text"]
-                        marks = element.get("marks", [])
-                        for mark in marks:
-                            if mark["type"] == "code":
-                                text = f"`{text}`"
-
-                        paragraph += text
-                    elif element["type"] == "hardBreak":
-                        paragraph += "\n"
-                    elif element["type"] == "inlineCard":
-                        url = element["attrs"]["url"]
-                        paragraph += f"[{url}]({url})"
-
+                    paragraph = "\n" + paragraph
                 print(paragraph)
 
 
